@@ -25,8 +25,8 @@ This application processes and sends webhooks to specified endpoints, handling r
 
 ### 1. Clone the Repository
 ```sh
-git clone https://github.com/thebolarin/webhookprocessor.git
-cd webhookprocessor
+git clone https://github.com/thebolarin/webhook.git
+cd webhook
 ```
 
 ### 2. Create a .env File
@@ -74,6 +74,14 @@ Run the command below to run the integration tests for the application
 ```bash
 docker-compose exec web pytest -v
 ```
+
+### 8. Monitoring
+Run the command below to run view the logs of the webhook processor
+```bash
+docker-compose logs -f web
+```
+
+
 
 ## Explanation of the Main Components
 
