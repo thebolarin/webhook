@@ -65,10 +65,7 @@ You can use curl, Postman, or any HTTP client to make the request. Here's an exa
 curl -X POST http://127.0.0.1:8000/webhooks/process \
      -H "Content-Type: application/json" \
      -d '{
-         "url": "http://example.com/webhook",
-         "payload": {
-             "data": "example_data"
-         }
+         "url": "http://example.com/webhook"
      }'
 ```
      
