@@ -96,3 +96,4 @@ Manages database and Redis operations, including enqueueing, dequeueing, updatin
 1. Threading over AsyncIO: Threading allows leveraging CPU-bound concurrency without adding the complexity of an async framework. However, an asynchronous approach might be more efficient under extreme load.
 2. Fixed Retry Backoff: While exponential backoff helps reduce load on endpoints, it can cause delays in reattempting connections for temporary network issues.
 3. Dead-letter Queue vs Real-time Handling: The dead-letter queue allows tracking of unrecoverable errors but does not automatically retry them unless manually processed. This keeps the system manageable, though it requires periodic monitoring.
+4. Asynchronous Webhook Handler: The webhook processor currently needs to be triggered before webhooks are processed. However an asynchronus approach might be more efficient where it continously listens to the webhook queue.

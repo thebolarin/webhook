@@ -198,7 +198,7 @@ def test_concurrent_processing(mock_post, webhook_processor, webhook_service):
         thread.join()
 
     # Ensure all webhooks are processed
-    assert webhook_processor.repository.webhook_queue_empty, "All webhooks should be processed concurrently without deadlock."
+    assert webhook_processor.webhook_service.webhook_queue_empty, "All webhooks should be processed concurrently without deadlock."
 
 
 @mock.patch('requests.post')
@@ -447,8 +447,6 @@ def test_stop_retrying_after_5_failures(mock_post, webhook_processor, webhook_se
     
 
     assert webhook_service.add_to_dead_letter_queue_count > 1
-
-
 
 
 

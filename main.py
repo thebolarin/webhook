@@ -30,7 +30,7 @@ app.add_middleware(ExceptionHandlerMiddleware)
 async def read_root():
     return {"message": "Hello World"}
 
-@app.get("/send/persistent")
+@app.post("/webhooks/process")
 async def process_webhooks():
     redis_client = deps.get_redis_client()
     webhook_service = WebhookService(redis_client)
