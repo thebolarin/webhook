@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from app.services.webhook_processor import WebhookProcessorService
 from app.services.webhook import WebhookService
 
@@ -26,14 +26,18 @@ app = FastAPI(
 
 app.add_middleware(ExceptionHandlerMiddleware)
 
+async def process_webhooks_task():
+    redis_client = deps.get_redis_client()
+    webhook_service = WebhookService(redis_client)
+    processor = WebhookProcessorService(webhook_file="webhooks.txt", webhook_service=webhook_service)
+    processor.process_webhooks()
+    
 @app.get("/")
 async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/webhooks/process")
-async def process_webhooks():
-    redis_client = deps.get_redis_client()
-    webhook_service = WebhookService(redis_client)
-    processor = WebhookProcessorService(webhook_file="webhooks.txt", webhook_service=webhook_service)
-    processor.process_webhooks()
-    return {"status": "Webhooks sent successfully"}
+async def process_webhooks(background_tasks: BackgroundTasks):
+    # Add the task to be processed in the background
+    background_tasks.add_task(process_webhooks_task)
+    return {"status": "Webhooks are being processed. Please check the logs to monitor the progress"}
