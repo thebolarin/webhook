@@ -55,7 +55,24 @@ To ensure that the database is up-to-date before using the application, follow t
    docker-compose exec web alembic upgrade head
    ```
 
-### 6. Running the test
+### 6. How to Run the Webhook API
+Once the application is running, you can trigger the webhook processor by making a POST request to **http://127.0.0.1:8000/webhooks/process**.
+
+Example of Making a POST Request
+You can use curl, Postman, or any HTTP client to make the request. Here's an example using curl:
+
+```sh
+curl -X POST http://127.0.0.1:8000/webhooks/process \
+     -H "Content-Type: application/json" \
+     -d '{
+         "url": "http://example.com/webhook",
+         "payload": {
+             "data": "example_data"
+         }
+     }'
+```
+     
+### 7. Running the test
 Run the command below to run the integration tests for the application
 ```bash
 docker-compose exec web pytest -v
@@ -76,7 +93,7 @@ Manages database and Redis operations, including enqueueing, dequeueing, updatin
 
 2. Dead-letter Queue: Allows for tracking of unresolvable failures without blocking the entire queue, improving robustness.
 3. Threading for Concurrency: Using multiple worker threads improves processing speed for high-volume webhook delivery, making the system more scalable.
-4. Redis for Queue Management: Redis serves as the backend for both the main processing queue and the retry queue, enabling fast access and persistence for enqueue and dequeue operations. A priority queue (using Redis sorted sets) stores webhooks based on the scheduled retry time. This allows the retry processor to efficiently fetch only the webhooks ready to be retried, optimizing delay handling.
+4. Redis for Queue Management: Redis serves as the backend for both the main processing queue and the retry queue, enabling fast access and persistence for enqueue and dequeue operations. For the retry queue, a priority queue (using Redis sorted sets) is used, which stores webhooks based on the scheduled retry time. This allows the retry processor to efficiently fetch only the webhooks ready to be retried, optimizing delay handling.
 8. Failure Thresholds: Endpoints are given up to 5 retry attempts before being marked as permanently failed. After reaching the threshold, any further webhooks for that endpoint are redirected to a dead-letter queue, maintaining endpoint stability without continuous retries.
 5. Database for Persistence: MySQL stores the persistent record of webhooks, their status, and retry attempts, ensuring durability across service restarts.
 6. Separation of Concerns: The solution is split into two main classes: WebhookProcessorService for processing logic and WebhookService for queue management. This approach isolates concerns for easier maintenance and testing.
@@ -96,4 +113,4 @@ Manages database and Redis operations, including enqueueing, dequeueing, updatin
 1. Threading over AsyncIO: Threading allows leveraging CPU-bound concurrency without adding the complexity of an async framework. However, an asynchronous approach might be more efficient under extreme load.
 2. Fixed Retry Backoff: While exponential backoff helps reduce load on endpoints, it can cause delays in reattempting connections for temporary network issues.
 3. Dead-letter Queue vs Real-time Handling: The dead-letter queue allows tracking of unrecoverable errors but does not automatically retry them unless manually processed. This keeps the system manageable, though it requires periodic monitoring.
-4. Asynchronous Webhook Handler: The webhook processor currently needs to be triggered before webhooks are processed. However, an asynchronous approach might be more efficient where it continuously listens to the webhook queue.
+4. Asynchronous Webhook Handler: The webhook processor currently needs to be triggered before webhooks are processed. However an asynchronus approach might be more efficient where it continously listens to the webhook queue.

@@ -5,6 +5,7 @@ certifi==2024.8.30
 charset-normalizer==3.4.0
 click==8.1.7
 coverage==7.6.4
+cryptography==43.0.1
 dnspython==2.7.0
 email_validator==2.2.0
 fakeredis==2.26.1
