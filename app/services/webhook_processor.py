@@ -53,7 +53,7 @@ class WebhookProcessorService:
                        
                         new_webhook = self.webhook_service.create_webhook(webhook, session)
                         if not new_webhook:
-                            logging.info("Webhook already created and processed.")
+                            logging.info(f"Webhook already created and processed for order {webhook["order_id"]} under {webhook["event"]}.")
                             continue
                             
                         self.webhook_service.enqueue_webhook(new_webhook.id)
