@@ -18,7 +18,7 @@ This application processes and sends webhooks to specified endpoints, handling r
 
 ## Setup and Installation
 #### Prerequisites
-- Python 3.8+
+- Python 3.12+
 - Redis: Used as the queue storage.
 - MySQL: Used as the database for storing webhook records.
 - Dependencies: Ensure you have access to pip for installing required Python packages.
