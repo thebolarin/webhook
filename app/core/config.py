@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     DATABASE_URI: Optional[str] = None
     REDIS_HOST: str
     REDIS_PORT:str
+    INITIAL_DELAY: int    
+    MAX_DELAY: int          
+    MAX_FAILURES: int      
+    NUM_WORKERS : int 
 
     @field_validator("DATABASE_URI", mode="before")
     def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> str:

@@ -4,7 +4,6 @@ import time
 import threading
 from app.dependencies import deps
 from app.models.webhook import WebhookStatus, Webhook
-from datetime import datetime
 
 INITIAL_DELAY = 1 
 MAX_DELAY = 60        

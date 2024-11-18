@@ -7,12 +7,14 @@ from datetime import datetime
 from app.utils.request import send_http_request
 from app.dependencies import deps
 from app.models.webhook import WebhookStatus
+from app.core.config import settings
 
 # Constants for retry and failure handling
-INITIAL_DELAY = 1       # Initial delay in seconds for exponential backoff
-MAX_DELAY = 60          # Maximum delay in seconds before marking as failed
-MAX_FAILURES = 5        # Maximum failures allowed per endpoint
-NUM_WORKERS = 5         # Number of concurrent worker threads
+INITIAL_DELAY = settings.INITIAL_DELAY  # Initial delay in seconds for exponential backoff
+MAX_DELAY = settings.MAX_DELAY          # Maximum delay in seconds before marking as failed
+MAX_FAILURES = settings.MAX_FAILURES    # Maximum failures allowed per endpoint
+NUM_WORKERS = settings.NUM_WORKERS      # Number of concurrent worker threads
+
 
 # Logging setup
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
